@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('material_code')->unique();
             $table->string('material_name');
-            $table->float('stock')->default(0);
             $table->enum('type', ['raw', 'finish_good']);
+            $table->float('minimum_stock');
+            $table->float('stock')->default(0);
+            $table->string('unit');
             $table->timestamps();
         });
     }

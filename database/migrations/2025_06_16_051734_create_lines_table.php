@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('line_code')->unique();
             $table->string('line_name');
+            $table->float('cycle_time');
             $table->integer('target')->default(0);
             $table->timestamps();
         });
