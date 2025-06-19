@@ -48,13 +48,16 @@ class DatabaseSeeder extends Seeder
             'material_code' => '001',
             'material_name' => 'Tepung',
             'type' => 'raw',
+            'unit' => 'kg',
             'stock' => 100,
+            'minimum_stock' => 50,
         ]);
 
         Line::create([
             'line_code' => '001',
             'line_name' => 'ROTI001',
-            'target' => 200,
+            'cycle_time' => 20,
+            'target' => 1440,
         ]);
 
         Shift::create([

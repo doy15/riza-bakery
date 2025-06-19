@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nik', 6)->unique();
             $table->string('name');
             $table->enum('role', ['produksi', 'qc', 'gudang', 'admin']);
+            $table->enum('status', ['active', 'not_active'])->default('active');
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
