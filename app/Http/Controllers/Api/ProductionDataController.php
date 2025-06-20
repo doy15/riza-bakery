@@ -29,7 +29,7 @@ class ProductionDataController extends Controller
                 ->exists();
 
             return [
-                'line_id' => $line->line_id,
+                'id' => $line->id,
                 'line_code' => $line->line_code,
                 'line_name' => $line->line_name,
                 'exists' => $exists,
