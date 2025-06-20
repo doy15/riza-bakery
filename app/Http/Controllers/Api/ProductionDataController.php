@@ -19,22 +19,23 @@ class ProductionDataController extends Controller
             'date' => 'required|date',
             'shift_id' => 'required|integer',
         ]);
-    
+
         $lines = Line::all();
-    
+
         $result = $lines->map(function ($line) use ($request) {
             $exists = ProductionData::where('date', $request->date)
                 ->where('shift_id', $request->shift_id)
                 ->where('line_id', $line->id)
                 ->exists();
-        
+
             return [
+                'line_id' => $line->line_id,
                 'line_code' => $line->line_code,
                 'line_name' => $line->line_name,
                 'exists' => $exists,
             ];
         });
-    
+
         return response()->json([
             'success' => true,
             'data' => $result
