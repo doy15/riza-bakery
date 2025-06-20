@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('line_id')->constrained();
             $table->foreignId('shift_id')->constrained();
-            $table->datetime('production_start');
-            $table->datetime('production_end');
+            $table->time('production_start');
+            $table->time('production_end');
             $table->integer('target')->default(0);
             $table->float('material_used')->nullable();
             $table->integer('ok')->default(0);

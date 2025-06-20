@@ -53,6 +53,15 @@ class DatabaseSeeder extends Seeder
             'minimum_stock' => 50,
         ]);
 
+        Material::create([
+            'material_code' => 'C001',
+            'material_name' => 'Roti Coklat',
+            'type' => 'finish_good',
+            'unit' => 'pcs',
+            'stock' => 100,
+            'minimum_stock' => 50,
+        ]);
+
         Line::create([
             'line_code' => '001',
             'line_name' => 'ROTI001',
