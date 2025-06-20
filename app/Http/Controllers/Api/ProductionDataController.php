@@ -17,18 +17,27 @@ class ProductionDataController extends Controller
     {
         $request->validate([
             'date' => 'required|date',
-            'line_id' => 'required|integer',
             'shift_id' => 'required|integer',
         ]);
-
-        $productiondata = ProductionData::where('date', $request->date)
-            ->where('line_id', $request->line_id)
-            ->where('shift_id', $request->shift_id)
-            ->exists(); // true or false
-
+    
+        $lines = Line::all();
+    
+        $result = $lines->map(function ($line) use ($request) {
+            $exists = ProductionData::where('date', $request->date)
+                ->where('shift_id', $request->shift_id)
+                ->where('line_id', $line->id)
+                ->exists();
+        
+            return [
+                'line_code' => $line->line_code,
+                'line_name' => $line->line_name,
+                'exists' => $exists,
+            ];
+        });
+    
         return response()->json([
             'success' => true,
-            'data' => $productiondata
+            'data' => $result
         ]);
     }
 
@@ -43,7 +52,7 @@ class ProductionDataController extends Controller
                                     ->where('user_id', $request->user_id)
                                     ->where('date', $request->date)
                                     ->get();
-                                    
+
         if ($production->count() > 0) {
             return response()->json([
                 'success' => true,

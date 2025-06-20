@@ -36,7 +36,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     });
 
     Route::group(['prefix' => 'production', 'as' => 'production.'], function () {
-        Route::get('/select', [ProductionDataController::class, 'select']);
+        Route::post('/select', [ProductionDataController::class, 'select']);
         Route::post('/generate', [ProductionDataController::class, 'generate']);
     });
 });
