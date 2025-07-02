@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\ProductionDataController as ApiProductionDataController;
+use App\Http\Controllers\Website\QualityInspectionController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Website\AuthController;
 use App\Http\Controllers\Website\HomeController;
 use App\Http\Controllers\Website\MaterialController;
 use App\Http\Controllers\Website\LineController;
+use App\Http\Controllers\Website\MaterialStockController;
+use App\Http\Controllers\Website\ProductionDataController;
 use App\Http\Controllers\Website\ShiftController;
 use App\Http\Controllers\Website\UserController;
 
@@ -19,6 +23,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/', [HomeController::class, 'index'])->name('index');
+    Route::get('/quality-inspections/data', [QualityInspectionController::class, 'getData'])->name('qualityinspections.data');
+    Route::get('/dashboard/material-data', [HomeController::class, 'getMaterialData'])->name('dashboard.material-data');
+    Route::get('/dashboard/materialstock-data', [MaterialStockController::class, 'getMaterialStockData'])->name('dashboard.getMaterialStockData');
+    Route::get('/materialstock/data', [MaterialStockController::class, 'data'])->name('materialstock.data');
+    Route::delete('/materialstock/destroy/{id}', [MaterialStockController::class, 'destroy']);
+    Route::get('/dashboard/efficiency-data', [ProductionDataController::class, 'getEfficiencyPerLine'])->name('dashboard.efficiency-data');
+    Route::delete('/quality-inspections/destroy/{id}', [QualityInspectionController::class, 'destroy'])->name('qualityinspections.destroy');
+
+
+
+
+
+
+
+
 
     Route::group(['prefix' => 'material', 'as' => 'material.', 'middleware' => 'admin'], function () {
         Route::get('/', [MaterialController::class, 'index'])->name('index');

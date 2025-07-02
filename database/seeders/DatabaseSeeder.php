@@ -49,18 +49,88 @@ class DatabaseSeeder extends Seeder
             'material_name' => 'Tepung',
             'type' => 'raw',
             'unit' => 'kg',
-            'stock' => 100,
+            'stock' => 80,
             'minimum_stock' => 50,
         ]);
-
         Material::create([
-            'material_code' => 'C001',
-            'material_name' => 'Roti Coklat',
+            'material_code' => '004',
+            'material_name' => 'kopyor panggang',
+            'type' => 'finish_good',
+            'unit' => 'kg',
+            'stock' => 100,
+            'minimum_stock' => 10,
+        ]);
+        Material::create([
+            'material_code' => '002',
+            'material_name' => 'Pia Kacang',
             'type' => 'finish_good',
             'unit' => 'pcs',
             'stock' => 100,
-            'minimum_stock' => 50,
+            'minimum_stock' => 20,
         ]);
+        Material::create([
+            'material_code' => '003',
+            'material_name' => 'odading goreng',
+            'type' => 'finish_good',
+            'unit' => 'pcs',
+            'stock' => 100,
+            'minimum_stock' => 40,
+        ]);
+
+        Material::create([
+            'material_code' => 'RAW003',
+            'material_name' => 'Kacang Tanah',
+            'type' => 'raw',
+            'unit' => 'kg',
+            'stock' => 25,
+            'minimum_stock' => 5,
+        ]);
+
+        Material::create([
+            'material_code' => 'RAW004',
+            'material_name' => 'Minyak Goreng',
+            'type' => 'raw',
+            'unit' => 'liter',
+            'stock' => 20,
+            'minimum_stock' => 5,
+        ]);
+        Material::create([
+            'material_code' => 'RAW005',
+            'material_name' => 'Garam',
+            'type' => 'raw',
+            'unit' => 'kg',
+            'stock' => 5,
+            'minimum_stock' => 1,
+        ]);
+
+        Material::create([
+            'material_code' => 'RAW006',
+            'material_name' => 'Air',
+            'type' => 'raw',
+            'unit' => 'liter',
+            'stock' => 50,
+            'minimum_stock' => 10,
+        ]);
+
+        Material::create([
+            'material_code' => 'RAW007',
+            'material_name' => 'Margarine',
+            'type' => 'raw',
+            'unit' => 'kg',
+            'stock' => 10,
+            'minimum_stock' => 2,
+        ]);
+
+        Material::create([
+            'material_code' => 'RAW008',
+            'material_name' => 'Telur',
+            'type' => 'raw',
+            'unit' => 'pcs',
+            'stock' => 100,
+            'minimum_stock' => 20,
+        ]);
+
+
 
         Line::create([
             'line_code' => '001',

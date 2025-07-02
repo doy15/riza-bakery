@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\LineController;
 use App\Http\Controllers\Api\MaterialController;
 use App\Http\Controllers\Api\MaterialStockController;
 use App\Http\Controllers\Api\ProductionDataController;
+use App\Http\Controllers\Api\QualityInspectionController;
 use App\Http\Controllers\Api\ShiftController;
 use App\Models\ProductionData;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,8 @@ Route::middleware(['jwt.auth'])->group(function () {
         Route::get('/get_data', [MaterialController::class, 'get_data']);
         Route::get('/get_data_raw', [MaterialController::class, 'get_data_raw']);
         Route::get('/get_data_finish_good', [MaterialController::class, 'get_data_finish_good']);
+        Route::put('/update', [MaterialController::class, 'update']);
+
     });
 
     Route::group(['prefix' => 'line', 'as' => 'line.'], function () {
@@ -38,5 +41,11 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::group(['prefix' => 'production', 'as' => 'production.'], function () {
         Route::post('/select', [ProductionDataController::class, 'select']);
         Route::post('/generate', [ProductionDataController::class, 'generate']);
+        Route::post('/entry', [ProductionDataController::class, 'entry']);
+        Route::get('/get_data', [ProductionDataController::class, 'get_data']);
+    });
+
+     Route::group(['prefix' => 'quality', 'as' => 'quality.'], function () {
+        Route::post('/entry', [QualityInspectionController::class, 'entry']);
     });
 });
