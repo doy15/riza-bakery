@@ -44,6 +44,21 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
+                                        <label>Material</label>
+                                        <select class="form-control select2 @error('material_id') is-invalid @enderror"
+                                            name="material_id" required>
+                                            <option value="">-- Select Material --</option>
+                                            @foreach ($materials as $material)
+                                                <option value="{{ $material->id }}"
+                                                    {{ old('material_id', $line->material_id) == $material->id ? 'selected' : '' }}>
+                                                    {{ $material->material_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('material_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <label>Cycle Time</label>
                                         <input type="number" min="1"
                                             class="form-control @error('cycle_time') is-invalid @enderror" name="cycle_time"

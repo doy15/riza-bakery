@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Website;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Line;
+use App\Models\Material;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -17,7 +18,7 @@ class LineController extends Controller
 
     public function data()
     {
-        $query = Line::select(['id', 'line_code', 'line_name', 'cycle_time', 'target']);
+        $query = Line::select(['lines.id', 'line_code', 'line_name', 'cycle_time', 'target', 'materials.material_name'])->join('materials', 'lines.material_id', '=', 'materials.id');
 
         return DataTables::of($query)
             ->addIndexColumn()
@@ -26,7 +27,11 @@ class LineController extends Controller
 
     public function create()
     {
-        return view('pages.line.create');
+        $materials = Material::select('materials.*')
+                                ->where('type', 'finish_good')                        
+                                ->orderBy('material_name')->get();
+
+        return view('pages.line.create', compact('materials'));
     }
 
     public function store(Request $request)
@@ -43,6 +48,7 @@ class LineController extends Controller
             'line_name' => $request->line_name,
             'cycle_time' => $request->cycle_time,
             'target' => $request->target,
+            'material_id' => $request->material_id,
         ]);
 
         return redirect()->route('line.index')->with('success', 'Data berhasil ditambah');
@@ -51,8 +57,11 @@ class LineController extends Controller
     public function edit(Request $request, $id)
     {
         $line = Line::findOrFail($id);
+        $materials = Material::select('materials.*')
+                                ->where('type', 'finish_good')                        
+                                ->orderBy('material_name')->get();
 
-        return view('pages.line.edit', compact('line'));
+        return view('pages.line.edit', compact('line', 'materials'));
     }
 
     public function update(Request $request, $id)
@@ -70,6 +79,7 @@ class LineController extends Controller
         $line->line_name = $request->line_name;
         $line->cycle_time = $request->cycle_time;
         $line->target = $request->target;
+        $line->material_id = $request->material_id;
         $line->save();
 
         return redirect()->route('line.index')->with('success', 'Data berhasil diperbarui.');

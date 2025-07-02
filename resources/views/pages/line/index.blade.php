@@ -35,6 +35,7 @@
                                                 </th>
                                                 <th>Line Code</th>
                                                 <th>Line Name</th>
+                                                <th>Produk</th>
                                                 <th>Cycle Time</th>
                                                 <th>Target</th>
                                                 <th>Action</th>
@@ -77,6 +78,11 @@
                 {
                     data: 'line_name',
                     name: 'line_name',
+                    className: 'align-middle'
+                },
+                {
+                    data: 'material_name',
+                    name: 'material_name',
                     className: 'align-middle'
                 },
                 {
