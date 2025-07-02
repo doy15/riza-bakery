@@ -43,7 +43,31 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
             'password' => bcrypt('4'),
         ]);
-
+        
+        Material::create([
+            'material_code' => '004',
+            'material_name' => 'Kopyor panggang',
+            'type' => 'finish_good',
+            'unit' => 'pcs',
+            'stock' => 100,
+            'minimum_stock' => 100,
+        ]);
+        Material::create([
+            'material_code' => '002',
+            'material_name' => 'Pia Kacang',
+            'type' => 'finish_good',
+            'unit' => 'pcs',
+            'stock' => 300,
+            'minimum_stock' => 200,
+        ]);
+        Material::create([
+            'material_code' => '003',
+            'material_name' => 'Odading goreng',
+            'type' => 'finish_good',
+            'unit' => 'pcs',
+            'stock' => 500,
+            'minimum_stock' => 300,
+        ]);
         Material::create([
             'material_code' => '001',
             'material_name' => 'Tepung',
@@ -52,31 +76,6 @@ class DatabaseSeeder extends Seeder
             'stock' => 80,
             'minimum_stock' => 50,
         ]);
-        Material::create([
-            'material_code' => '004',
-            'material_name' => 'kopyor panggang',
-            'type' => 'finish_good',
-            'unit' => 'kg',
-            'stock' => 100,
-            'minimum_stock' => 10,
-        ]);
-        Material::create([
-            'material_code' => '002',
-            'material_name' => 'Pia Kacang',
-            'type' => 'finish_good',
-            'unit' => 'pcs',
-            'stock' => 100,
-            'minimum_stock' => 20,
-        ]);
-        Material::create([
-            'material_code' => '003',
-            'material_name' => 'odading goreng',
-            'type' => 'finish_good',
-            'unit' => 'pcs',
-            'stock' => 100,
-            'minimum_stock' => 40,
-        ]);
-
         Material::create([
             'material_code' => 'RAW003',
             'material_name' => 'Kacang Tanah',
@@ -133,6 +132,7 @@ class DatabaseSeeder extends Seeder
 
 
         Line::create([
+            'material_id' => 1, 
             'line_code' => '001',
             'line_name' => 'ROTI001',
             'cycle_time' => 20,

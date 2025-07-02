@@ -10,7 +10,7 @@ class LineController extends Controller
 {
     public function get_data()
     {
-        $line = Line::select('id', 'line_code','line_name','cycle_time','target')->orderBy('line_name')->get();
+        $line = Line::select('id', 'line_code', 'line_name', 'cycle_time', 'target', 'material_id')->orderBy('line_name')->get();
 
         return response()->json([
             'success' => true,

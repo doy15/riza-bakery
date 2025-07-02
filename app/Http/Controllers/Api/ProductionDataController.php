@@ -97,8 +97,6 @@ class ProductionDataController extends Controller
         ]);
     }
 
-
-
     public function entry(Request $request)
     {
         $request->validate([
@@ -185,6 +183,26 @@ class ProductionDataController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan untuk tanggal, shift, dan line tersebut.',
+                'data' => []
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil ditemukan.',
+            'data' => $data
+        ]);
+    }
+
+    public function history(Request $request)
+    {
+        $data = ProductionData::with(['line', 'shift', 'user', 'material'])
+            ->get();
+
+        if ($data->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan untuk tanggal dan line tersebut.',
                 'data' => []
             ], 404);
         }

@@ -14,9 +14,13 @@ class QualityInspection extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function produksi()
+    public function production_data()
     {
         return $this->belongsTo(ProductionData::class, 'production_data_id');
     }
 
+    public function line()
+    {
+        return $this->belongsTo(Line::class, 'line_id');
+    }
 }

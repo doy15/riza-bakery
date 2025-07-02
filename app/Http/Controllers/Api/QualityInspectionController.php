@@ -58,13 +58,21 @@ class QualityInspectionController extends Controller
             }
         }
         
-        
-
-
-
         return response()->json([
             'success' => true,
             'message' => 'Data inspeksi berhasil disimpan.',
         ], 200);
+    }
+
+    public function history(Request $request)
+    {
+        $inspections = QualityInspection::with('production_data', 'user', 'production_data.line')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $inspections
+        ]);
     }
 }

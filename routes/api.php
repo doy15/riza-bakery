@@ -23,11 +23,12 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/distribution/store', [DistributionController::class, 'store']);
 
     Route::group(['prefix' => 'material', 'as' => 'material.'], function () {
+        Route::get('/history', [MaterialController::class, 'history']);
         Route::get('/get_data', [MaterialController::class, 'get_data']);
         Route::get('/get_data_raw', [MaterialController::class, 'get_data_raw']);
         Route::get('/get_data_finish_good', [MaterialController::class, 'get_data_finish_good']);
+        Route::post('/store', [MaterialController::class, 'store']);
         Route::put('/update', [MaterialController::class, 'update']);
-
     });
 
     Route::group(['prefix' => 'line', 'as' => 'line.'], function () {
@@ -43,9 +44,11 @@ Route::middleware(['jwt.auth'])->group(function () {
         Route::post('/generate', [ProductionDataController::class, 'generate']);
         Route::post('/entry', [ProductionDataController::class, 'entry']);
         Route::get('/get_data', [ProductionDataController::class, 'get_data']);
+        Route::get('/history', [ProductionDataController::class, 'history']);
     });
 
-     Route::group(['prefix' => 'quality', 'as' => 'quality.'], function () {
+    Route::group(['prefix' => 'quality', 'as' => 'quality.'], function () {
         Route::post('/entry', [QualityInspectionController::class, 'entry']);
+        Route::get('/history', [QualityInspectionController::class, 'history']);
     });
 });
