@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/dashboard/efficiency-data', [WebsiteProductionDataController::class, 'getEfficiencyPerLine'])->name('api.dashboard.efficiency-data');
+Route::get('/dashboard/efficiency-data', [WebsiteProductionDataController::class, 'getEfficiencyPerLine']);
+Route::get('/dashboard-quality', [QualityInspectionController::class, 'dashboardQuality']);
+
 
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
