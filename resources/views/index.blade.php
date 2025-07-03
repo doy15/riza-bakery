@@ -41,6 +41,10 @@
                 <div class="row">
                     <div class="col-lg-12 ">
                         <div class="card">
+                            <div class="d-flex justify-content-end">
+                                <button onclick="printPDF()" class="btn btn-primary m-3">Print PDF</button>
+                            </div>
+
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4 class="mb-0">Material</h4>
 
@@ -179,11 +183,12 @@
 <!-- jQuery & DataTables JS -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const columnsInspection = [
-            {
+    document.addEventListener('DOMContentLoaded', function() {
+        const columnsInspection = [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 className: 'text-center align-middle',
@@ -229,7 +234,7 @@
                 orderable: false,
                 searchable: false,
                 className: 'text-center align-middle',
-                render: function (data, type, row) {
+                render: function(data, type, row) {
                     return `
                         <button class="btn btn-danger btn-sm btn-deletes"
                                 data-id="${row.id}"
@@ -241,7 +246,7 @@
             });
         @endif
 
-    const tableInspection = new DataTable('#inspectionTable', {
+        const tableInspection = new DataTable('#inspectionTable', {
             processing: false,
             serverSide: true,
             ajax: "{{ route('qualityinspections.data') }}",
@@ -253,7 +258,7 @@
             tableInspection.ajax.reload(null, false);
         }, 5000);
 
-        document.addEventListener('click', function (e) {
+        document.addEventListener('click', function(e) {
             if (e.target && e.target.classList.contains('btn-deletes')) {
                 const id = e.target.dataset.id;
                 const name = e.target.dataset.name;
@@ -268,12 +273,13 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         fetch(`/quality-inspections/destroy/${id}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                                'Accept': 'application/json'
-                            }
-                        })
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').content,
+                                    'Accept': 'application/json'
+                                }
+                            })
                             .then(res => res.json())
                             .then(response => {
                                 if (response.success) {
@@ -287,7 +293,7 @@
                 });
             }
         });
-        document.addEventListener('click', function (e) {
+        document.addEventListener('click', function(e) {
             if (e.target && e.target.classList.contains('btn-delete')) {
                 const id = e.target.dataset.id;
                 const name = e.target.dataset.name;
@@ -302,13 +308,13 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         fetch(`/materialstock/destroy/${id}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector(
-                                    'meta[name="csrf-token"]').content,
-                                'Accept': 'application/json'
-                            }
-                        }).then(res => res.json())
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').content,
+                                    'Accept': 'application/json'
+                                }
+                            }).then(res => res.json())
                             .then(response => {
                                 if (response.success) {
                                     Swal.fire('Berhasil!', response.message, 'success');
@@ -333,21 +339,21 @@
             data: {
                 labels: [],
                 datasets: [{
-                    label: 'Stock',
-                    data: [],
-                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Minimum Stock',
-                    data: [],
-                    type: 'scatter',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 1)',
-                    showLine: false,
-                    pointRadius: 5
-                }
+                        label: 'Stock',
+                        data: [],
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Minimum Stock',
+                        data: [],
+                        type: 'scatter',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 1)',
+                        showLine: false,
+                        pointRadius: 5
+                    }
                 ]
             },
             options: {
@@ -414,7 +420,7 @@
         }
 
         const currentUserRole = "{{ $userRole }}";
-        document.getElementById('filterType').addEventListener('change', function () {
+        document.getElementById('filterType').addEventListener('change', function() {
             selectedType = this.value;
             fetchMaterialData();
         });
@@ -491,40 +497,40 @@
             serverSide: true,
             ajax: "{{ route('materialstock.data') }}",
             columns: [{
-                data: 'DT_RowIndex',
-                name: 'DT_RowIndex',
-                className: 'text-center align-middle',
-                orderable: false,
-                searchable: false
-            },
-            {
-                data: 'material.material_name',
-                name: 'material.material_name',
-                className: 'text-left align-middle'
-            },
-            {
-                data: 'qty',
-                name: 'qty',
-                className: 'text-left align-middle'
-            },
-            {
-                data: 'status',
-                name: 'status',
-                className: 'text-left align-middle'
-            },
-            {
-                data: 'created_at',
-                name: 'created_at',
-                className: 'text-left align-middle'
-            },
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    className: 'text-center align-middle',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'material.material_name',
+                    name: 'material.material_name',
+                    className: 'text-left align-middle'
+                },
+                {
+                    data: 'qty',
+                    name: 'qty',
+                    className: 'text-left align-middle'
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    className: 'text-left align-middle'
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at',
+                    className: 'text-left align-middle'
+                },
                 @if ($userRole === 'admin')
-                                                                                                                            {
+                    {
                         data: null,
                         name: 'action',
                         orderable: false,
                         searchable: false,
                         className: 'text-center align-middle',
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
                             return `
                                                                                                                             <button class="btn btn-danger btn-sm btn-delete"
                                                                                                                                     data-id="${row.id}"
@@ -616,16 +622,16 @@
                             shared: true
                         },
                         series: [{
-                            name: 'OK',
-                            data: line.ok_values,
-                            color: '#00BFFF'
-                        },
-                        {
-                            name: 'Plan Qty',
-                            data: line.plan_values,
-                            color: '#FF69B4',
-                            dashStyle: 'ShortDash'
-                        }
+                                name: 'OK',
+                                data: line.ok_values,
+                                color: '#00BFFF'
+                            },
+                            {
+                                name: 'Plan Qty',
+                                data: line.plan_values,
+                                color: '#FF69B4',
+                                dashStyle: 'ShortDash'
+                            }
                         ],
                         legend: {
                             itemStyle: {
@@ -639,7 +645,29 @@
 
     loadEfficiencyCharts();
     setInterval(loadEfficiencyCharts, 5000);
+</script>
+<script>
+    async function printPDF() {
+        const canvas = document.getElementById('materialChart');
+        if (!canvas) {
+            alert('Chart tidak ditemukan.');
+            return;
+        }
 
+        // Tangkap canvas chart ke gambar
+        const canvasImage = await html2canvas(canvas);
 
+        const imgData = canvasImage.toDataURL('image/png');
+        const {
+            jsPDF
+        } = window.jspdf;
+        const pdf = new jsPDF({
+            orientation: 'landscape',
+            unit: 'px',
+            format: [canvasImage.width, canvasImage.height]
+        });
 
+        pdf.addImage(imgData, 'PNG', 0, 0, canvasImage.width, canvasImage.height);
+        pdf.save("material-stock-chart.pdf");
+    }
 </script>
