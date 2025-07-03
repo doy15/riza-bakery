@@ -7,7 +7,6 @@ use App\Models\ProductionData;
 use App\Models\QualityInspection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
 class QualityInspectionController extends Controller
 {
@@ -79,15 +78,16 @@ class QualityInspectionController extends Controller
 
     public function dashboardQuality()
     {
-        $counts = QualityInspection::select('judgement', DB::raw('count(*) as total'))
-            ->groupBy('judgement')
-            ->pluck('total', 'judgement');
-
+        $inspections = QualityInspection::select('judgement')->get();
+    
+        $okCount = $inspections->where('judgement', 'ok')->count();
+        $ngCount = $inspections->where('judgement', 'ng')->count();
+    
         return response()->json([
             'success' => true,
             'data' => [
-                'ok' => $counts['OK'] ?? 0,
-                'ng' => $counts['NG'] ?? 0,
+                'ok' => $okCount,
+                'ng' => $ngCount
             ]
         ]);
     }
