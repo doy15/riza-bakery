@@ -18,6 +18,7 @@ Route::get('/login', [AuthController::class, 'login_page'])->name('login_page');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/register', [AuthController::class, 'register_page'])->name('register_page');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::get('/dashboard/efficiency-data', [ProductionDataController::class, 'getEfficiencyPerLine'])->name('dashboard.efficiency-data');
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -28,16 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/materialstock-data', [MaterialStockController::class, 'getMaterialStockData'])->name('dashboard.getMaterialStockData');
     Route::get('/materialstock/data', [MaterialStockController::class, 'data'])->name('materialstock.data');
     Route::delete('/materialstock/destroy/{id}', [MaterialStockController::class, 'destroy']);
-    Route::get('/dashboard/efficiency-data', [ProductionDataController::class, 'getEfficiencyPerLine'])->name('dashboard.efficiency-data');
     Route::delete('/quality-inspections/destroy/{id}', [QualityInspectionController::class, 'destroy'])->name('qualityinspections.destroy');
-
-
-
-
-
-
-
-
 
     Route::group(['prefix' => 'material', 'as' => 'material.', 'middleware' => 'admin'], function () {
         Route::get('/', [MaterialController::class, 'index'])->name('index');

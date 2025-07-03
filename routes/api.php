@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\LineController;
 use App\Http\Controllers\Api\MaterialController;
 use App\Http\Controllers\Api\MaterialStockController;
 use App\Http\Controllers\Api\ProductionDataController;
+use App\Http\Controllers\Website\ProductionDataController as WebsiteProductionDataController;
 use App\Http\Controllers\Api\QualityInspectionController;
 use App\Http\Controllers\Api\ShiftController;
 use App\Models\ProductionData;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/dashboard/efficiency-data', [WebsiteProductionDataController::class, 'getEfficiencyPerLine'])->name('api.dashboard.efficiency-data');
 
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
