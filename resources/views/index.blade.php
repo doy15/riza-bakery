@@ -41,10 +41,11 @@
                 <div class="row">
                     <div class="col-lg-12 ">
                         <div class="card">
-                            <div class="d-flex justify-content-end">
-                                <button onclick="printPDF()" class="btn btn-primary m-3">Print PDF</button>
-                            </div>
-
+                            @if (Auth::user()->role == 'admin')
+                                <div class="d-flex justify-content-end">
+                                    <button onclick="printPDF()" class="btn btn-primary m-3">Print PDF</button>
+                                </div>
+                            @endif
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4 class="mb-0">Material</h4>
 
@@ -532,12 +533,12 @@
                         className: 'text-center align-middle',
                         render: function(data, type, row) {
                             return `
-                                                                                                                            <button class="btn btn-danger btn-sm btn-delete"
-                                                                                                                                    data-id="${row.id}"
-                                                                                                                                    data-name="${row.material?.material_name ?? ''}">
-                                                                                                                                Delete
-                                                                                                                            </button>
-                                                                                                                        `;
+                                <button class="btn btn-danger btn-sm btn-delete"
+                                        data-id="${row.id}"
+                                        data-name="${row.material?.material_name ?? ''}">
+                                    Delete
+                                </button>
+                            `;
                         }
                     }
                 @endif
@@ -648,26 +649,66 @@
 </script>
 <script>
     async function printPDF() {
-        const canvas = document.getElementById('materialChart');
-        if (!canvas) {
-            alert('Chart tidak ditemukan.');
-            return;
-        }
-
-        // Tangkap canvas chart ke gambar
-        const canvasImage = await html2canvas(canvas);
-
-        const imgData = canvasImage.toDataURL('image/png');
         const {
             jsPDF
         } = window.jspdf;
-        const pdf = new jsPDF({
-            orientation: 'landscape',
-            unit: 'px',
-            format: [canvasImage.width, canvasImage.height]
-        });
+        const pdf = new jsPDF('l', 'px', 'a4');
+        const margin = 20;
 
-        pdf.addImage(imgData, 'PNG', 0, 0, canvasImage.width, canvasImage.height);
-        pdf.save("material-stock-chart.pdf");
+        // ✅ Halaman 1 - Chart materialChart
+        const chart1 = document.getElementById('materialChart');
+        if (!chart1) {
+            alert('Chart #materialChart tidak ditemukan.');
+            return;
+        }
+        const img1 = await html2canvas(chart1);
+        const data1 = img1.toDataURL('image/png');
+        const width = pdf.internal.pageSize.getWidth() - 2 * margin;
+        const height1 = chart1.height * (width / chart1.width);
+        pdf.addImage(data1, 'PNG', margin, margin, width, height1);
+
+        // ✅ Halaman 2 - Chart materialStockChart
+        pdf.addPage();
+        const chart2 = document.getElementById('materialStockChart');
+        const img2 = await html2canvas(chart2);
+        const data2 = img2.toDataURL('image/png');
+        const height2 = chart2.height * (width / chart2.width);
+        pdf.addImage(data2, 'PNG', margin, margin, width, height2);
+
+        // ✅ Halaman 3 - Tabel materialStockTable
+        pdf.addPage();
+        const table1 = document.getElementById('materialStockTable');
+        const tableCanvas1 = await html2canvas(table1, {
+            scrollY: -window.scrollY,
+            backgroundColor: '#ffffff'
+        });
+        const tableData1 = tableCanvas1.toDataURL('image/png');
+        const tableHeight1 = tableCanvas1.height * (width / tableCanvas1.width);
+        pdf.addImage(tableData1, 'PNG', margin, margin, width, tableHeight1);
+
+        // ✅ Halaman 4 - efficiencyCards (kartu-kartu)
+        pdf.addPage();
+        const cards = document.getElementById('efficiencyCards');
+        const cardsCanvas = await html2canvas(cards, {
+            scrollY: -window.scrollY,
+            backgroundColor: '#ffffff'
+        });
+        const cardsData = cardsCanvas.toDataURL('image/png');
+        const cardsHeight = cardsCanvas.height * (width / cardsCanvas.width);
+        pdf.addImage(cardsData, 'PNG', margin, margin, width, cardsHeight);
+
+        // ✅ Halaman 5 - Tabel inspectionTable
+        pdf.addPage();
+        const table2 = document.getElementById('inspectionTable');
+        const tableCanvas2 = await html2canvas(table2, {
+            scrollY: -window.scrollY,
+            backgroundColor: '#ffffff'
+        });
+        const tableData2 = tableCanvas2.toDataURL('image/png');
+        const tableHeight2 = tableCanvas2.height * (width / tableCanvas2.width);
+        pdf.addImage(tableData2, 'PNG', margin, margin, width, tableHeight2);
+
+        // ✅ Simpan
+        pdf.save("Full_Report.pdf");
     }
 </script>
